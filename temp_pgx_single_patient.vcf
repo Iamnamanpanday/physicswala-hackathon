@@ -1,0 +1,9 @@
+##fileformat=VCFv4.2
+##source=PGx_Single_Patient_Test
+##reference=GRCh38
+##INFO=<ID=DP,Number=1,Type=Integer,Description="Total Depth">
+##FORMAT=<ID=GT,Number=1,Type=String,Description="Genotype">
+#CHROM	POS	ID	REF	ALT	QUAL	FILTER	INFO	FORMAT	PATIENT_SINGLE
+10	94761900	rs3892097	C	T	100	PASS	DP=50	GT	1/1
+10	94781859	rs1065852	G	A	99	PASS	DP=45	GT	0/1
+10	94762700	rs16947	G	A	98	PASS	DP=60	GT	1/1

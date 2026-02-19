@@ -1,0 +1,15 @@
+##fileformat=VCFv4.2
+##fileDate=20260220
+##source=PGx_Test_Patient_Data
+##INFO=<ID=GENE,Number=1,Type=String,Description="Gene Symbol">
+##INFO=<ID=STAR,Number=1,Type=String,Description="Star Allele">
+##INFO=<ID=RS,Number=1,Type=String,Description="dbSNP RS ID">
+##FORMAT=<ID=GT,Number=1,Type=String,Description="Genotype">
+
+#CHROM  POS        ID           REF ALT QUAL FILTER INFO                                  FORMAT  PATIENT_001
+
+2	48648	rs1000001	G	C	.	PASS	GENE=SLCO1B1;STAR=*1/*1;RS=rs1000001
+10	91988	rs1000002	T	G	.	PASS	GENE=CYP2C19;STAR=*1/*1;RS=rs1000002
+2	987556	rs1000003	T	A	.	PASS	GENE=CYP2D6;STAR=*1/*2;RS=rs1000003
+10	202999	rs1000004	G	A	.	PASS	GENE=CYP2C19;STAR=*4/*4;RS=rs1000004
+1	27394	rs1000005	G	A	.	PASS	GENE=CYP2C19;STAR=*1/*2;RS=rs1000005
