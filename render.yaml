@@ -1,0 +1,25 @@
+services:
+  - type: web
+    name: pharma-guard-backend
+    runtime: python
+    runtimeVersion: "3.11"
+    plan: free
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn main:app --host 0.0.0.0 --port $PORT
+    envVars:
+      - key: PYTHON_BACKEND_URL
+        value: https://pharma-guard-backend.onrender.com
+      - key: CORS_ORIGINS
+        value: "https://pharma-guard-frontend.onrender.com,http://localhost:3000,http://localhost:5173"
+
+  - type: web
+    name: pharma-guard-frontend
+    runtime: node
+    runtimeVersion: "20"
+    plan: free
+    buildCommand: cd pharma-guard-frontend-build && npm install && npm run build
+    startCommand: cd pharma-guard-frontend-build && npm run start
+    envVars:
+      - key: NEXT_PUBLIC_API_URL
+        value: https://pharma-guard-backend.onrender.com
+publicDir: pharma-guard-frontend-build/.next
