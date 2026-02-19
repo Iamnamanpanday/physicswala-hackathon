@@ -25,9 +25,25 @@ const RISK_COLORS = {
 }
 
 const riskDistribution = [
-  { name: "Safe", value: 2, fill: RISK_COLORS.safe },
-  { name: "Adjust Dosage", value: 3, fill: RISK_COLORS.adjust },
-  { name: "Toxic / Ineffective", value: 3, fill: RISK_COLORS.toxic },
+  {
+    name: "Safe",
+    value: 2,
+    fill: RISK_COLORS.safe,
+    // Example drug names — replace with actual data when available
+    drugs: ["Simvastatin", "Metformin"],
+  },
+  {
+    name: "Adjust Dosage",
+    value: 3,
+    fill: RISK_COLORS.adjust,
+    drugs: ["Warfarin"],
+  },
+  {
+    name: "Toxic / Ineffective",
+    value: 3,
+    fill: RISK_COLORS.toxic,
+    drugs: ["Clopidogrel", "Codeine", "Fluorouracil"],
+  },
 ]
 
 const geneInvolvement = [

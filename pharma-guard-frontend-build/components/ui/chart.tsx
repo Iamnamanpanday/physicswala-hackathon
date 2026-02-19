@@ -86,13 +86,13 @@ const ChartStyle = ({ id, config }: { id: string; config: ChartConfig }) => {
             ([theme, prefix]) => `
 ${prefix} [data-chart=${id}] {
 ${colorConfig
-  .map(([key, itemConfig]) => {
-    const color =
-      itemConfig.theme?.[theme as keyof typeof itemConfig.theme] ||
-      itemConfig.color
-    return color ? `  --color-${key}: ${color};` : null
-  })
-  .join('\n')}
+                .map(([key, itemConfig]) => {
+                  const color =
+                    itemConfig.theme?.[theme as keyof typeof itemConfig.theme] ||
+                    itemConfig.color
+                  return color ? `  --color-${key}: ${color};` : null
+                })
+                .join('\n')}
 }
 `,
           )
@@ -184,6 +184,11 @@ function ChartTooltipContent({
           const itemConfig = getPayloadConfigFromPayload(config, item, key)
           const indicatorColor = color || item.payload.fill || item.color
 
+          // Support rendering additional metadata like drug names if present
+          const payloadAny = item.payload as any
+          const extraDrugs: string[] | string | undefined =
+            payloadAny?.drugs || payloadAny?.drug || payloadAny?.drugName
+
           return (
             <div
               key={item.dataKey}
@@ -231,6 +236,15 @@ function ChartTooltipContent({
                       <span className="text-muted-foreground">
                         {itemConfig?.label || item.name}
                       </span>
+                      {extraDrugs ? (
+                        Array.isArray(extraDrugs) ? (
+                          <div className="text-xs text-muted-foreground/90">
+                            {extraDrugs.join(', ')}
+                          </div>
+                        ) : (
+                          <div className="text-xs text-muted-foreground/90">{extraDrugs}</div>
+                        )
+                      ) : null}
                     </div>
                     {item.value && (
                       <span className="text-foreground font-mono font-medium tabular-nums">
@@ -316,8 +330,8 @@ function getPayloadConfigFromPayload(
 
   const payloadPayload =
     'payload' in payload &&
-    typeof payload.payload === 'object' &&
-    payload.payload !== null
+      typeof payload.payload === 'object' &&
+      payload.payload !== null
       ? payload.payload
       : undefined
 
