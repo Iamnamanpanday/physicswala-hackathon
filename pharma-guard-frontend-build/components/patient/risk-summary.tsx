@@ -10,7 +10,7 @@ import {
   CollapsibleTrigger,
 } from "@/components/ui/collapsible"
 import { Button } from "@/components/ui/button"
-import { FileText, ChevronDown, Dna, Stethoscope, Brain, AlertTriangle } from "lucide-react"
+import { FileText, ChevronDown, Dna, Stethoscope, Brain, AlertTriangle, Download, Code } from "lucide-react"
 import { useState } from "react"
 
 type RiskLevel = "safe" | "adjust" | "toxic"
@@ -22,6 +22,7 @@ interface DrugResult {
   phenotype: string
   recommendation: string
   explanation: string
+  jsonData?: any // Raw JSON response from backend
 }
 
 interface RiskSummaryProps {
@@ -76,6 +77,27 @@ function DrugResultCard({ result }: { result: DrugResult }) {
   const [isOpen, setIsOpen] = useState(false)
   const config = riskConfig[result.risk]
 
+  const handleDownloadJSON = () => {
+    const json = result.jsonData || {
+      drug: result.drug,
+      gene: result.gene,
+      phenotype: result.phenotype,
+      risk: result.risk,
+      recommendation: result.recommendation,
+      explanation: result.explanation,
+    }
+    const jsonString = JSON.stringify(json, null, 2)
+    const blob = new Blob([jsonString], { type: "application/json" })
+    const url = URL.createObjectURL(blob)
+    const link = document.createElement("a")
+    link.href = url
+    link.download = `${result.drug.toLowerCase()}-analysis-${Date.now()}.json`
+    document.body.appendChild(link)
+    link.click()
+    document.body.removeChild(link)
+    URL.revokeObjectURL(url)
+  }
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 10 }}
@@ -94,12 +116,23 @@ function DrugResultCard({ result }: { result: DrugResult }) {
             </p>
           </div>
         </div>
-        <Badge variant="outline" className={config.badgeClass}>
-          {result.risk === "toxic" && (
-            <AlertTriangle className="mr-1 h-3 w-3" />
-          )}
-          {config.label}
-        </Badge>
+        <div className="flex gap-2">
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={handleDownloadJSON}
+            className="h-6 w-6 p-0"
+            title="Download JSON"
+          >
+            <Download className="h-4 w-4" />
+          </Button>
+          <Badge variant="outline" className={config.badgeClass}>
+            {result.risk === "toxic" && (
+              <AlertTriangle className="mr-1 h-3 w-3" />
+            )}
+            {config.label}
+          </Badge>
+        </div>
       </div>
 
       <Collapsible open={isOpen} onOpenChange={setIsOpen} className="mt-3">
@@ -148,6 +181,19 @@ function DrugResultCard({ result }: { result: DrugResult }) {
               {result.explanation}
             </p>
           </div>
+
+          {/* JSON Data */}
+          {result.jsonData && (
+            <div className="rounded-lg bg-card p-3">
+              <div className="mb-2 flex items-center gap-2 text-xs font-semibold text-foreground">
+                <Code className="h-3.5 w-3.5 text-primary" />
+                Raw JSON Data
+              </div>
+              <div className="max-h-48 overflow-y-auto rounded bg-black/20 p-2 font-mono text-xs text-muted-foreground">
+                <pre>{JSON.stringify(result.jsonData, null, 2)}</pre>
+              </div>
+            </div>
+          )}
         </CollapsibleContent>
       </Collapsible>
     </motion.div>

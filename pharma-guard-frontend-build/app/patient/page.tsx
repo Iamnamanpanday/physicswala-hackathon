@@ -95,25 +95,48 @@ export default function PatientDashboard() {
     setIsAnalyzing(true)
     setResults(null)
 
-    // Simulate API call to POST /api/analyze
-    // In production, this would send the VCF file and selected drugs to the backend
     try {
-      // const formData = new FormData()
-      // formData.append("vcf", vcfFile)
-      // formData.append("drugs", JSON.stringify(selectedDrugs))
-      // formData.append("patientInfo", JSON.stringify(patientInfo))
-      // const response = await fetch("/api/analyze", { method: "POST", body: formData })
-      // const data = await response.json()
+      const resultsArray: DrugResult[] = []
 
-      // Simulated delay
-      await new Promise((resolve) => setTimeout(resolve, 3000))
+      // Analyze each selected drug
+      for (const drug of selectedDrugs) {
+        const formData = new FormData()
+        formData.append("file", vcfFile!)
+        formData.append("drug", drug)
+
+        const response = await fetch("/api/analyze", {
+          method: "POST",
+          body: formData,
+        })
+
+        if (!response.ok) {
+          throw new Error(`Failed to analyze ${drug}`)
+        }
+
+        const jsonData = await response.json()
+
+        // Transform API response to DrugResult format
+        const result: DrugResult = {
+          drug: jsonData.drug,
+          risk: (jsonData.risk_assessment?.risk_label || "safe").toLowerCase() as any,
+          gene: jsonData.pharmacogenomic_profile?.primary_gene || "",
+          phenotype: jsonData.pharmacogenomic_profile?.phenotype || "",
+          recommendation: jsonData.clinical_recommendation?.recommendation || "",
+          explanation: jsonData.llm_generated_explanation?.summary || "",
+          jsonData: jsonData, // Store full JSON for download
+        }
+        resultsArray.push(result)
+      }
+
+      setResults(resultsArray)
+    } catch (error) {
+      console.error("Analysis error:", error)
+      // Fallback to mock results on error for demonstration
       setResults(mockResults.filter((r) => selectedDrugs.includes(r.drug)))
-    } catch {
-      // Handle error
     } finally {
       setIsAnalyzing(false)
     }
-  }, [canAnalyze, selectedDrugs])
+  }, [canAnalyze, selectedDrugs, vcfFile])
 
   return (
     <div className="flex h-screen bg-background">

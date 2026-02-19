@@ -3,64 +3,55 @@ import { NextRequest, NextResponse } from "next/server"
 /**
  * POST /api/analyze
  *
- * Accepts a VCF file, drug list, and patient info.
- * Returns pharmacogenomic risk predictions.
+ * Accepts a VCF file and drug name.
+ * Forwards to Python backend for pharmacogenomic analysis.
  *
  * Expected body (FormData):
- * - vcf: File (VCF file)
- * - drugs: string (JSON array of drug names)
- * - patientInfo: string (JSON object with patient details)
- *
- * This is a placeholder endpoint ready for backend integration.
+ * - file: File (VCF file)
+ * - drug: string (drug name)
  */
 export async function POST(request: NextRequest) {
   try {
     const formData = await request.formData()
-    const vcfFile = formData.get("vcf") as File | null
-    const drugsRaw = formData.get("drugs") as string | null
-    const patientInfoRaw = formData.get("patientInfo") as string | null
+    const file = formData.get("file") as File | null
+    const drug = formData.get("drug") as string | null
 
-    if (!vcfFile) {
+    if (!file) {
       return NextResponse.json(
         { error: "VCF file is required" },
         { status: 400 }
       )
     }
 
-    if (!drugsRaw) {
+    if (!drug) {
       return NextResponse.json(
-        { error: "Drug list is required" },
+        { error: "Drug is required" },
         { status: 400 }
       )
     }
 
-    const drugs = JSON.parse(drugsRaw) as string[]
-    const patientInfo = patientInfoRaw ? JSON.parse(patientInfoRaw) : {}
+    // Forward to Python backend
+    const pythonBackendUrl = process.env.PYTHON_BACKEND_URL || "http://localhost:8000"
 
-    // TODO: Integrate with actual pharmacogenomic analysis engine
-    // 1. Parse VCF file to extract genetic variants
-    // 2. Look up CPIC guidelines for each drug-gene pair
-    // 3. Run AI model for risk prediction
-    // 4. Generate clinical recommendations
+    const backendFormData = new FormData()
+    backendFormData.append("file", file)
+    backendFormData.append("drug", drug)
 
-    const mockResults = drugs.map((drug) => ({
-      drug,
-      risk: ["safe", "adjust", "toxic"][Math.floor(Math.random() * 3)] as string,
-      gene: "CYP2C9",
-      phenotype: "Intermediate Metabolizer",
-      recommendation: `Clinical recommendation for ${drug} based on genomic analysis.`,
-      explanation: `AI-generated explanation for ${drug} pharmacogenomic interaction with patient profile.`,
-    }))
-
-    return NextResponse.json({
-      success: true,
-      patientInfo,
-      results: mockResults,
-      analyzedAt: new Date().toISOString(),
+    const response = await fetch(`${pythonBackendUrl}/analyze/`, {
+      method: "POST",
+      body: backendFormData,
     })
-  } catch {
+
+    if (!response.ok) {
+      throw new Error(`Python backend returned ${response.status}`)
+    }
+
+    const data = await response.json()
+    return NextResponse.json(data)
+  } catch (error) {
+    console.error("Analysis error:", error)
     return NextResponse.json(
-      { error: "Failed to process analysis request" },
+      { error: "Failed to process analysis request", details: String(error) },
       { status: 500 }
     )
   }

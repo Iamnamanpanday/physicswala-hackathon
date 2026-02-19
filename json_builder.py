@@ -42,6 +42,13 @@ def build_response(
             "monitoring_required": fusion_result.get("severity", "unknown") in ["High", "Severe"]
         },
 
+        "llm_generated_explanation": {
+            "summary": fusion_result.get("explanation", "Analysis complete"),
+            "clinical_significance": fusion_result.get("clinical_significance", "Standard interpretation applies"),
+            "interaction_warnings": fusion_result.get("interaction_warnings", []),
+            "additional_notes": fusion_result.get("additional_notes", "")
+        },
+
         "quality_metrics": {
             "vcf_parsing_success": True,
             "rule_engine_used": fusion_result.get("rule_engine_used", True),
