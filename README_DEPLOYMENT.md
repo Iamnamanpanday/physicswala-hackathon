@@ -16,7 +16,7 @@ A full-stack application for personalized drug-gene interaction analysis combini
 
 ### Frontend (Next.js/React)
 - **Location:** `/pharma-guard-frontend-build`
-- **Runtime:** Node.js  
+- **Runtime:** Node.js
 - **Port:** 3000 (production), 5173 (Vite dev)
 - **Features:**
   - Patient authentication with Supabase
@@ -40,7 +40,7 @@ uvicorn main:app --reload
 ```
 Backend runs on `http://localhost:8000`
 
-### Setup Frontend  
+### Setup Frontend
 ```bash
 cd pharma-guard-frontend-build
 npm install

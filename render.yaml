@@ -1,25 +1,38 @@
 services:
+  # Python FastAPI Backend
   - type: web
-    name: pharma-guard-backend
+    name: rift-backend
     runtime: python
     runtimeVersion: "3.11"
     plan: free
     buildCommand: pip install -r requirements.txt
     startCommand: uvicorn main:app --host 0.0.0.0 --port $PORT
     envVars:
-      - key: PYTHON_BACKEND_URL
-        value: https://pharma-guard-backend.onrender.com
       - key: CORS_ORIGINS
-        value: "https://pharma-guard-frontend.onrender.com,http://localhost:3000,http://localhost:5173"
+        value: "https://rift-frontend.onrender.com,http://localhost:3000,http://localhost:5173"
+      - key: OPENAI_API_KEY
+        scope: secret
+      - key: PORT
+        value: "8000"
 
+  # Next.js Frontend
   - type: web
-    name: pharma-guard-frontend
+    name: rift-frontend
     runtime: node
     runtimeVersion: "20"
     plan: free
     buildCommand: cd pharma-guard-frontend-build && npm install && npm run build
-    startCommand: cd pharma-guard-frontend-build && npm run start
+    startCommand: cd pharma-guard-frontend-build && npm start
     envVars:
-      - key: NEXT_PUBLIC_API_URL
-        value: https://pharma-guard-backend.onrender.com
-publicDir: pharma-guard-frontend-build/.next
+      - key: NEXT_PUBLIC_SUPABASE_URL
+        scope: secret
+      - key: NEXT_PUBLIC_SUPABASE_ANON_KEY
+        scope: secret
+      - key: SUPABASE_SERVICE_ROLE_KEY
+        scope: secret
+      - key: GEMINI_API_KEY
+        scope: secret
+      - key: PYTHON_BACKEND_URL
+        value: https://rift-backend.onrender.com
+      - key: NODE_ENV
+        value: production
