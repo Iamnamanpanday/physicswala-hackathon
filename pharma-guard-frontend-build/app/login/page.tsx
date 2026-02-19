@@ -16,7 +16,7 @@ import { getSupabaseBrowserClient } from "@/lib/supabase-client"
 
 type RoleOption = "patient" | "doctor" | "admin"
 
-export default function LoginPage() {
+function LoginForm() {
   const router = useRouter()
   const searchParams = useSearchParams()
   const { login } = useAuth()
@@ -174,5 +174,15 @@ export default function LoginPage() {
         </Card>
       </motion.div>
     </div>
+  )
+}
+
+import { Suspense } from "react"
+
+export default function LoginPage() {
+  return (
+    <Suspense fallback={<div className="flex min-h-screen items-center justify-center">Loading...</div>}>
+      <LoginForm />
+    </Suspense>
   )
 }
