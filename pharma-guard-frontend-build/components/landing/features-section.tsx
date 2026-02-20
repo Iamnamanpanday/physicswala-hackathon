@@ -64,24 +64,26 @@ const itemVariants = {
 
 export function FeaturesSection() {
   return (
-    <section className="relative bg-card py-24">
+    <section className="relative py-24 md:py-32 bg-gradient-to-b from-background to-card/20">
       <div className="mx-auto max-w-6xl px-6">
+        {/* Section header */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
-          className="mb-16 text-center"
+          className="mb-20 text-center md:mb-24"
         >
-          <h2 className="text-balance text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
+          <h2 className="text-balance text-4xl font-bold tracking-tight text-foreground sm:text-5xl">
             Built for Clinical Precision
           </h2>
-          <p className="mx-auto mt-4 max-w-2xl text-pretty text-lg text-muted-foreground">
-            Every feature is designed to support evidence-based pharmacogenomic
-            decision-making at the point of care.
+          <p className="mx-auto mt-6 max-w-2xl text-pretty text-base text-muted-foreground leading-relaxed">
+            Every feature is engineered to support evidence-based pharmacogenomic
+            decision-making at the point of care with clinical rigor.
           </p>
         </motion.div>
 
+        {/* Features grid */}
         <motion.div
           variants={containerVariants}
           initial="hidden"
@@ -91,15 +93,15 @@ export function FeaturesSection() {
         >
           {features.map((feature) => (
             <motion.div key={feature.title} variants={itemVariants}>
-              <Card className="group h-full border-border/60 transition-all duration-300 hover:border-primary/30 hover:shadow-lg hover:shadow-primary/5">
-                <CardHeader>
-                  <div className="mb-2 flex h-11 w-11 items-center justify-center rounded-lg bg-primary/10 text-primary transition-colors group-hover:bg-primary/15">
-                    <feature.icon className="h-5 w-5" />
+              <Card className="group h-full border-border/50 bg-card/50 backdrop-blur transition-all duration-300 hover:border-primary/40 hover:bg-card/80 hover:shadow-lg hover:shadow-primary/10">
+                <CardHeader className="space-y-4">
+                  <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-primary/10 text-primary transition-all duration-300 group-hover:bg-primary/20 group-hover:shadow-lg group-hover:shadow-primary/20">
+                    <feature.icon className="h-6 w-6" />
                   </div>
-                  <CardTitle className="text-lg">{feature.title}</CardTitle>
+                  <CardTitle className="text-xl font-semibold">{feature.title}</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <CardDescription className="text-sm leading-relaxed">
+                  <CardDescription className="text-sm leading-relaxed text-muted-foreground">
                     {feature.description}
                   </CardDescription>
                 </CardContent>

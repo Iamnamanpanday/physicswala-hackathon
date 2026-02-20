@@ -11,53 +11,55 @@ export function Navbar() {
       initial={{ opacity: 0, y: -10 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5 }}
-      className="sticky top-0 z-50 border-b border-border/50 bg-background/80 backdrop-blur-md"
+      className="sticky top-0 z-50 border-b border-border/30 bg-background/70 backdrop-blur-xl supports-[backdrop-filter]:bg-background/60"
     >
       <nav className="mx-auto flex h-16 max-w-6xl items-center justify-between px-6">
-        <Link href="/" className="flex items-center gap-2.5">
-          <div className="relative flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-emerald-400 via-sky-500 to-indigo-500 text-primary-foreground shadow-[0_0_25px_rgba(56,189,248,0.75)]">
-            <div className="absolute inset-0 rounded-xl bg-[radial-gradient(circle_at_30%_20%,rgba(255,255,255,0.35),transparent_55%),radial-gradient(circle_at_70%_80%,rgba(15,23,42,0.85),transparent_55%)] opacity-70" />
-            <Shield className="relative h-4 w-4" />
+        {/* Logo */}
+        <Link href="/" className="flex items-center gap-3 transition-opacity hover:opacity-80">
+          <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-gradient-to-br from-primary via-primary/80 to-accent text-primary-foreground font-semibold text-sm">
+            P
           </div>
-          <span className="text-lg font-semibold tracking-tight text-foreground">
+          <span className="text-lg font-bold tracking-tight text-foreground hidden sm:inline">
             PharmaGuard
           </span>
         </Link>
 
-        <div className="hidden items-center gap-8 md:flex">
+        {/* Navigation links */}
+        <div className="hidden items-center gap-1 md:flex">
           <Link
             href="/"
-            className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
+            className="px-3 py-2 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground rounded-md hover:bg-secondary/50"
           >
             Platform
           </Link>
           <Link
             href="/patient"
-            className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
+            className="px-3 py-2 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground rounded-md hover:bg-secondary/50"
           >
             Patient Analysis
           </Link>
           <Link
             href="/doctor"
-            className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
+            className="px-3 py-2 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground rounded-md hover:bg-secondary/50"
           >
             Doctor Dashboard
           </Link>
         </div>
 
-        <div className="flex items-center gap-3">
+        {/* Auth buttons */}
+        <div className="flex items-center gap-2.5">
           <Button
             asChild
             variant="ghost"
             size="sm"
-            className="relative overflow-hidden border border-transparent bg-gradient-to-r from-slate-900/40 to-slate-900/10 text-xs font-medium text-slate-100 shadow-[0_0_18px_rgba(15,23,42,0.55)] before:absolute before:inset-0 before:bg-[radial-gradient(circle_at_0%_0%,rgba(56,189,248,0.4),transparent_55%)] before:opacity-0 before:transition-opacity hover:border-sky-500/50 hover:before:opacity-100"
+            className="text-xs font-medium"
           >
             <Link href="/login">Sign In</Link>
           </Button>
           <Button
             asChild
             size="sm"
-            className="relative overflow-hidden bg-gradient-to-r from-emerald-400 via-sky-500 to-indigo-500 text-xs font-semibold text-slate-950 shadow-[0_0_25px_rgba(56,189,248,0.85)] transition-transform hover:-translate-y-[1px] hover:shadow-[0_0_35px_rgba(56,189,248,0.95)]"
+            className="text-xs font-semibold shadow-md hover:shadow-lg transition-all"
           >
             <Link href="/login">Get Started</Link>
           </Button>

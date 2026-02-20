@@ -47,80 +47,78 @@ function MouseGlow() {
 
 export function HeroSection() {
   return (
-    <section className="relative min-h-[90vh] flex items-center justify-center overflow-hidden bg-gradient-to-b from-slate-950 via-slate-950/95 to-slate-950">
+    <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-b from-background via-background to-card/30">
       <DnaBackground />
-
-      {/* Mouse-following interactive glow */}
       <MouseGlow />
 
-      {/* Static ambient glow ring */}
-      <div className="pointer-events-none absolute inset-0 opacity-60 z-0">
-        <div className="absolute -top-40 left-1/2 h-[520px] w-[520px] -translate-x-1/2 rounded-full bg-[conic-gradient(from_190deg_at_50%_50%,rgba(56,189,248,0.12),rgba(16,185,129,0.28),rgba(129,140,248,0.22),transparent_70%)] blur-3xl" />
-      </div>
+      {/* Premium gradient accent - top */}
+      <div className="pointer-events-none absolute -top-40 left-1/2 h-96 w-full max-w-2xl -translate-x-1/2 rounded-full bg-gradient-to-b from-primary/20 via-primary/5 to-transparent blur-3xl opacity-70" />
 
-      {/* Floating particle orbs */}
+      {/* Animated accent orbs - refined motion */}
       <div className="pointer-events-none absolute inset-0 z-0 overflow-hidden">
         {[
-          { w: 320, h: 320, x: "10%", y: "20%", c: "rgba(16,185,129,0.06)", dur: 8 },
-          { w: 240, h: 240, x: "75%", y: "60%", c: "rgba(56,189,248,0.07)", dur: 11 },
-          { w: 180, h: 180, x: "55%", y: "10%", c: "rgba(129,140,248,0.07)", dur: 9 },
-          { w: 200, h: 200, x: "20%", y: "70%", c: "rgba(56,189,248,0.05)", dur: 13 },
+          { w: 280, h: 280, x: "5%", y: "15%", c: "from-primary/15 to-transparent", dur: 8 },
+          { w: 220, h: 220, x: "80%", y: "55%", c: "from-accent/10 to-transparent", dur: 12 },
+          { w: 160, h: 160, x: "50%", y: "5%", c: "from-primary/8 to-transparent", dur: 10 },
         ].map((orb, i) => (
           <motion.div
             key={i}
-            className="absolute rounded-full blur-3xl"
-            style={{ width: orb.w, height: orb.h, left: orb.x, top: orb.y, background: orb.c }}
-            animate={{ y: [0, -24, 0], x: [0, 10, 0], scale: [1, 1.08, 1] }}
-            transition={{ duration: orb.dur, repeat: Infinity, ease: "easeInOut", delay: i * 1.5 }}
+            className={`absolute rounded-full blur-3xl bg-gradient-to-b ${orb.c}`}
+            style={{ width: orb.w, height: orb.h, left: orb.x, top: orb.y }}
+            animate={{ y: [0, -20, 0], scale: [1, 1.1, 1] }}
+            transition={{ duration: orb.dur, repeat: Infinity, ease: "easeInOut", delay: i * 2 }}
           />
         ))}
       </div>
 
-      <div className="relative z-10 mx-auto max-w-5xl px-6 py-24 text-center">
+      <div className="relative z-10 mx-auto max-w-5xl px-6 py-20 text-center md:py-32">
+        {/* Badge */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
-          className="mb-6 inline-flex items-center gap-2 rounded-full border border-emerald-400/40 bg-slate-900/60 px-4 py-2 text-xs font-medium uppercase tracking-[0.16em] text-emerald-300/90 shadow-[0_0_22px_rgba(16,185,129,0.45)] backdrop-blur-md"
+          className="mb-8 inline-flex items-center gap-2 rounded-full border border-primary/40 bg-primary/5 px-4 py-2 text-xs font-semibold uppercase tracking-widest text-primary/90 backdrop-blur-sm"
         >
-          <Shield className="h-4 w-4" />
+          <Shield className="h-3.5 w-3.5" />
           Precision Medicine Platform
         </motion.div>
 
+        {/* Main heading */}
         <motion.h1
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7, delay: 0.1 }}
-          className="text-balance text-4xl font-semibold tracking-tight text-slate-50 sm:text-5xl lg:text-6xl"
+          className="text-balance text-5xl font-bold tracking-tight text-foreground sm:text-6xl lg:text-7xl leading-tight"
         >
-          AI-Powered Pharmacogenomic
+          AI-Powered
           <br />
-          <span className="bg-gradient-to-r from-emerald-400 via-sky-400 to-indigo-400 bg-clip-text text-transparent drop-shadow-[0_0_32px_rgba(56,189,248,0.65)]">
-            Risk Prediction
+          <span className="bg-gradient-to-r from-primary via-primary/80 to-accent bg-clip-text text-transparent">
+            Pharmacogenomic Intelligence
           </span>
         </motion.h1>
 
+        {/* Subheading */}
         <motion.p
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7, delay: 0.2 }}
-          className="mx-auto mt-6 max-w-2xl text-pretty text-[15px] leading-relaxed text-slate-300/90"
+          className="mx-auto mt-8 max-w-3xl text-lg text-muted-foreground leading-relaxed"
         >
-          Leverage genomic data and CPIC guidelines to predict drug-gene interactions
-          in real time. PharmaGuard helps clinicians make informed, personalized
-          treatment decisions with explainable AI.
+          Leverage genomic data and CPIC evidence to predict drug-gene interactions in real time. 
+          PharmaGuard empowers clinicians with transparent, actionable insights for personalized treatment decisions.
         </motion.p>
 
+        {/* CTA Buttons */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7, delay: 0.3 }}
-          className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row"
+          className="mt-12 flex flex-col items-center justify-center gap-4 sm:flex-row"
         >
           <Button
             asChild
             size="lg"
-            className="gap-2 px-8 text-[15px] font-semibold tracking-tight bg-gradient-to-r from-emerald-400 via-sky-500 to-indigo-500 text-slate-950 shadow-[0_0_28px_rgba(56,189,248,0.9)] transition-all hover:-translate-y-[2px] hover:shadow-[0_0_40px_rgba(56,189,248,1)]"
+            className="gap-2.5 px-8 text-base font-semibold shadow-lg hover:shadow-xl transition-all hover:-translate-y-1"
           >
             <Link href="/patient">
               Analyze Patient
@@ -131,7 +129,7 @@ export function HeroSection() {
             asChild
             variant="outline"
             size="lg"
-            className="gap-2 px-8 text-[15px] font-medium border border-sky-400/70 bg-slate-950/40 text-sky-100 shadow-[0_0_24px_rgba(56,189,248,0.55)] backdrop-blur hover:bg-slate-900/80"
+            className="gap-2.5 px-8 text-base font-medium"
           >
             <Link href="/doctor">
               Doctor Dashboard
@@ -139,23 +137,24 @@ export function HeroSection() {
           </Button>
         </motion.div>
 
+        {/* Trust indicators */}
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 1, delay: 0.6 }}
-          className="mt-16 flex items-center justify-center gap-8 text-xs text-slate-400"
+          className="mt-16 grid grid-cols-3 gap-6 border-t border-border/50 pt-12 md:flex md:justify-center md:gap-12"
         >
-          <div className="flex items-center gap-2">
-            <div className="h-2 w-2 rounded-full bg-emerald-400 shadow-[0_0_14px_rgba(16,185,129,0.9)]" />
-            HIPAA Compliant
+          <div className="flex flex-col items-center gap-1">
+            <div className="text-sm font-semibold text-foreground">HIPAA</div>
+            <div className="text-xs text-muted-foreground">Compliant</div>
           </div>
-          <div className="flex items-center gap-2">
-            <div className="h-2 w-2 rounded-full bg-sky-400 shadow-[0_0_14px_rgba(56,189,248,0.9)]" />
-            CPIC Certified
+          <div className="flex flex-col items-center gap-1">
+            <div className="text-sm font-semibold text-foreground">CPIC</div>
+            <div className="text-xs text-muted-foreground">Certified</div>
           </div>
-          <div className="flex items-center gap-2">
-            <div className="h-2 w-2 rounded-full bg-indigo-400 shadow-[0_0_14px_rgba(129,140,248,0.9)]" />
-            FDA Guidelines
+          <div className="flex flex-col items-center gap-1">
+            <div className="text-sm font-semibold text-foreground">FDA</div>
+            <div className="text-xs text-muted-foreground">Aligned</div>
           </div>
         </motion.div>
       </div>
